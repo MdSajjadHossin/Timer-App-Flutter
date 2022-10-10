@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:promotodor_timer_app/timerService.dart';
+import 'package:provider/provider.dart';
 
 class TimeController extends StatefulWidget {
   const TimeController({super.key});
@@ -10,6 +12,7 @@ class TimeController extends StatefulWidget {
 class _TimeControllerState extends State<TimeController> {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<TimerService>(context);
     return Container(
       width: 100,
       height: 100,
@@ -17,12 +20,21 @@ class _TimeControllerState extends State<TimeController> {
           const BoxDecoration(color: Colors.black26, shape: BoxShape.circle),
       child: Center(
         child: IconButton(
-          icon: const Icon(
-            Icons.pause,
-            color: Colors.white,
-          ),
+          icon: provider.timerPlaying
+              ? const Icon(
+                  (Icons.pause),
+                  color: Colors.white,
+                )
+              : const Icon(
+                  Icons.play_arrow_sharp,
+                  color: Colors.white,
+                ),
           iconSize: 55,
-          onPressed: () {},
+          onPressed: () {
+            provider.timerPlaying
+                ? Provider.of<TimerService>(context, listen: false).paush()
+                : Provider.of<TimerService>(context, listen: false).start();
+          },
         ),
       ),
     );
